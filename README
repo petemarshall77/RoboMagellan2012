@@ -1,0 +1,16 @@
+RoboMagellan2012
+================
+
+This is the code for the PVIT (http://pvit.org) RoboMagellan robot for
+the 2012 competition.
+
+License
+=======
+We can't afford a lawyer so have at it if you are interested. Remember
+that a lot of this code is specific to the physical characteristics of
+our robot but we'll do our best to isolate the overall control
+algorithms from the specific implamentations.
+
+Contributors
+============
+Pete Marshall petemarshall77@gmail.com
