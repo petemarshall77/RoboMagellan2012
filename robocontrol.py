@@ -70,6 +70,7 @@ def process_control_file(filename):
     the route details if sucessful, otherwise NULL if an error is
     found"""
 
+    log("Processing control file: " + filename)
     error_count = 0
     control_data = []
 
@@ -77,6 +78,7 @@ def process_control_file(filename):
     f = open(filename)
     while True:
         line = f.readline()
+        log(">>> " + line.rstrip())
         if not line: break
         result = process_control_line(line)
         if result == False:

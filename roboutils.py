@@ -4,6 +4,10 @@
 #        don't add anything here unless it truly is a shared utility function
 #        or object. Let's keep that namespace clean, folks!
 
+import time
+
+start_time = time.time()
+
 class RobotError(Exception):
     def __init__(self, value):
         self.value = value
@@ -11,4 +15,7 @@ class RobotError(Exception):
         return repr(self.value)
 
 def log(message):
-    print message
+    log_time = time.time() - start_time
+    format = "%08.3f %s"
+    print format % (log_time, message)
+
