@@ -33,7 +33,7 @@ def speed(speed_value):
 # Stop the robot
 def halt():
     """Stop the robot"""
-    pass
+    power(0)
 
 # Stop the robot
 def stop():

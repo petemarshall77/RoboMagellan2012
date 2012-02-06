@@ -10,7 +10,7 @@ import robonavigation
 import roboconfig
 from   roboutils import *
 
-#-----------------------------------------------------------------------        
+#-------------------------------------------------------------------        
 # Robot initialization
 #
 #   Parse the control file and then call the intialize() function
@@ -58,6 +58,7 @@ def mainloop(control_data):
         else:
             # Should never happen: robocontrol should catch, but hey...
             log("Error in mainloop: invalid command " + command['command'])
+            robopower.halt()
             raise RobotError
 
 #-------------------------------------------------------------------------
@@ -143,7 +144,7 @@ def locate_cone():
                 continue
         
         # Steer toward the cone     
-        robopower.steer(int(camera_X/32.0))
+        robopower.steer(int(camera_X/32.0-10.0))
         robopower.speed(1)
         
         # Check the touch sensor
