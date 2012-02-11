@@ -4,6 +4,7 @@ from roboutils import *
 from math import sin, cos, atan2, radians, degrees, sqrt
 
 earth_radius = 6371000.0    # meters
+global gps_latitude, gps_longitude
 
 def initialize():
     log("Navigation initialization started")
@@ -12,39 +13,44 @@ def initialize():
 
 # vector_to_target(latitude, longitude)
 #
-#   Latitude and longitude are the target we are seeking. This
-#   function gets the latest GPS data and, using that, calculates the
-#   distance and angle to the given target from the current position
+#   Latitude and longitude are the target we are seeking. Return the
+#   distance and bearing from the current GPS location to the target.
 #
 def vector_to_target(latitude, longitude):
 
-    print latitude, longitude
     (gps_lat, gps_lon) = get_gps_coordinates()
+    return vector_between(gps_lat, gps_lon, latitude, longitude)
+
+# vector_between(lat1, lon1, lat2, lon2)
+#  
+#   Return the distance and (initial) bearing from the point at
+#   (lat1, lon1) to the point at (lat2, lon2).
+# 
+def vector_between(lat1, lon1, lat2, lon2):
 
     # Convert to radians
-    latitude = radians(latitude)
-    longitude = radians(longitude)
-    gps_lat = radians(gps_lat)
-    gps_lon = radians(gps_lon)
+    lat1 = radians(lat1)
+    lon1 = radians(lon1)
+    lat2 = radians(lat2)
+    lon2 = radians(lon2)
 
     # Calculate distance to target using Haversine formula
-    delta_lat = latitude - gps_lat
-    delta_lon = longitude - gps_lon
+    delta_lat = lat2 - lat1
+    delta_lon = lon2 - lon1
     a = sin(delta_lat/2.0) * sin(delta_lat/2.0) + \
         sin(delta_lon/2.0) * sin(delta_lon/2.0) * \
-        cos(gps_lat) * cos(latitude)
+        cos(lat1) * cos(lat2)
     c = 2.0 * atan2(sqrt(a), sqrt(1-a))
     distance = earth_radius * c
 
     # Calculate the (great circle!!!) bearing
-    y = sin(delta_lon) * cos(latitude)
-    x = cos(gps_lat) * sin(latitude) - \
-        sin(gps_lat) * cos(latitude) * cos(delta_lon)
-    bearing = degrees(atan2(y,x))                                              
-    print distance, bearing
+    y = sin(delta_lon) * cos(lat2)
+    x = cos(lat1) * sin(lat2) - \
+        sin(lat1) * cos(lat2) * cos(delta_lon)
+    bearing = (degrees(atan2(y,x)) + 360) % 360
 
-    return(1.0, 90)
+    return(distance, bearing)
 
 def get_gps_coordinates():
 
-    return(118.4191, 33.77881667)
+    return(118.0, 33.00)
