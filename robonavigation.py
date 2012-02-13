@@ -51,6 +51,25 @@ def vector_between(lat1, lon1, lat2, lon2):
 
     return(distance, bearing)
 
+# get_steer_angle(vehicle_angle, target_angle)
+#
+#   Vehicle_angle is the robot heading relative to north.
+#   Target angle is the heading from the robot to the target,
+#   relative to north.
+#   This function returns the angle to steer to align the robot
+#   to the target. This angle should be in the range -180 < x < +180
+#
+def get_steer_angle(vehicle_angle, target_angle):
+
+    target_value = target_angle - vehicle_angle
+    if abs(target_value) > 180.0:
+        if target_value < 0.0:
+            target_value = target_value + 360
+        else:
+            target_value = target_value - 360
+
+    return target_value
+        
 def get_gps_coordinates():
 
     return(118.0, 33.00)
