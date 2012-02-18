@@ -17,5 +17,6 @@ class RobotError(Exception):
 def log(message):
     log_time = time.time() - start_time
     format = "%08.3f %s"
-    print format % (log_time, message)
+    for line in message.split('\n'):
+        print format % (log_time, line)
 

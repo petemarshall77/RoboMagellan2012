@@ -1,13 +1,8 @@
 #!/usr/bin/python
 
 # Main control program
-import sys
-import robocamera
-import robosensors
-import robopower
-import robocontrol
-import robonavigation
-import roboconfig
+import sys,threading,traceback
+import robocamera,robosensors,robopower,robocontrol,robonavigation,roboconfig
 from   roboutils import *
 
 #-------------------------------------------------------------------        
@@ -178,7 +173,7 @@ def re_sight_cone():
     # Couldn't find it - return False        
     log("...failed")        
     return False
-    
+
 #-----------------------------------------------------------------------
 # Main
 #
@@ -192,8 +187,22 @@ def re_sight_cone():
 def main():
     log("RoboMagellan 2012 started")
     control_data = initialize()
-    mainloop(control_data)
-    log("RoboMagellan 2012 ended - Champagne Time!")
+    time.sleep(1)  # Allow time for processing threads to start
+    try:
+        mainloop(control_data)
+    except:
+        log("*** ERROR *** A fatal error has occured *** ERROR ***")
+        log(str(traceback.format_exc()))
+    else:
+        log("RoboMagellan 2012 ended - Champagne Time!")
+
+    # Stop the robot
+    robopower.halt()
+    
+    # Terminate running threads
+    for thread in threading.enumerate()[1:]:
+        log("Terminating thread: " + str(thread))
+        thread.stop()
 
 if __name__ == '__main__':
     main()

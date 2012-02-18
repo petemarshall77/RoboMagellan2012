@@ -32,7 +32,7 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
         socket = self.request[1]
         socket.sendto(data.upper(), self.client_address)
         log(data)
-
+ 
 #
 # Thread to run the camera server
 #
@@ -48,6 +48,7 @@ class CameraThread(threading.Thread):
 
     # Stop - shutdown the socket server, serve_forever will complete    
     def stop(self):
+        log("Terminating camera server")
         self.camera_server.shutdown()
         
 #
