@@ -55,6 +55,12 @@ def mainloop(control_data):
         elif command['command'] == 'STOP':
             robopower.stop()
             return
+        elif command['command'] == 'POWR':
+            robopower.set_power(command['power'])
+        elif command['command'] == 'STER':
+            robopower.set_steering(command['steering'])
+        elif command['command'] == 'WAIT':
+            time.sleep(command['sleeptime'])
         else:
             # Should never happen: robocontrol should catch, but hey...
             log("Error in mainloop: invalid command " + command['command'])
@@ -112,8 +118,8 @@ def navigate_to(latitude, longitude, mode='cone'):
         steer_angle = \
             robonavigation.get_steer_angle(current_heading, heading_to_target)
         log("Navigate to: steer_angle = " + str(steer_angle))
-        robopower.speed(5)
-        robopower.steer(steer_angle)
+        robopower.set_speed(5)
+        robopower.set_steering(steer_angle)
 
 #------------------------------------------------------------------------
 # locate_cone()

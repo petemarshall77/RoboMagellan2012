@@ -12,3 +12,7 @@ max_camera_distance = 2.5
 # between attempts
 re_sight_attempts = 10
 re_sight_sleep_time = 0.5
+
+# Camera server network information
+camera_host = "localhost"
+camera_port = 4040

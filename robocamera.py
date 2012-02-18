@@ -1,9 +1,62 @@
 # Camera processing for RoboMagellan2012
 
+#------------------------------------------------------------------------
+# Camera processing in RoboMagellan2012 is done through an external
+# program: RoboRealm. RoboRealm is configured to send data to this
+# module via UDP.
+#
+# To handle the RoboRealm data, this module starts a thread
+# to handle the incoming requests. The data is received, processed
+# and the camera data fields are updated. The main control process
+# then reads these data asynchronously.
+#------------------------------------------------------------------------
+
+import threading
+import roboconfig
+import SocketServer
+from math import log
 from roboutils import * 
 
+camera_distance = 0.0
+camera_x = 0
+camera_y = 0
+
+#
+# Camera server - receives data from RoboRealm
+#
+class MyUDPHandler(SocketServer.BaseRequestHandler):
+    
+    # Handle incoming data
+    def handle(self):
+        data = self.request[0].strip()
+        socket = self.request[1]
+        socket.sendto(data.upper(), self.client_address)
+        log(data)
+
+#
+# Thread to run the camera server
+#
+class CameraThread(threading.Thread):
+
+    # Run - create a UDP socket server
+    def run(self):
+        HOST = roboconfig.camera_host
+        PORT = roboconfig.camera_port
+        log("Starting camera server on " + str(HOST) + ":" + str(PORT)) 
+        self.camera_server = SocketServer.UDPServer((HOST, PORT), MyUDPHandler)
+        self.camera_server.serve_forever() 
+
+    # Stop - shutdown the socket server, serve_forever will complete    
+    def stop(self):
+        self.camera_server.shutdown()
+        
+#
+# Camera initialization
+#
 def initialize():
     log("Camera initialization started")
+    camera_thread = CameraThread()
+    camera_thread.start()
     log("Camera initialization completed")
     return True
 
@@ -13,4 +66,4 @@ def initialize():
 #    X and Y are (integer) pixel offsets from the center of the frame.
 #    Distance is in meters.
 def get_data():
-    return (0, 0, 1.0)
+    return (camera_x, camera_y, camera_distance)

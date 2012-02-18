@@ -61,6 +61,12 @@ def process_control_line(line):
         return process_cone_directive(line)
     elif line[0:4] == "STOP":
         return process_stop_directive(line)
+    elif line[0:4] == "STER":
+        return process_ster_directive(line)
+    elif line[0:4] == "POWR":
+        return process_powr_directive(line)
+    elif line[0:4] == "WAIT":
+        return process_wait_directive(line)
     else:
         log("Undefined directive " + line[0:4] +" in line: " + line)
         return False
