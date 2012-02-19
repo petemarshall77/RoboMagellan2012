@@ -8,6 +8,9 @@ gps_radius = 3.0
 # Maximum reliable camera distance in meters
 max_camera_distance = 2.5
 
+# Maximum time before warning that no camera data is recieved in seconds
+camera_timeout = 10
+
 # Number of times to re-try sighting a cone and time
 # between attempts
 re_sight_attempts = 10

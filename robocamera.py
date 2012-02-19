@@ -11,7 +11,7 @@
 # then reads these data asynchronously.
 #------------------------------------------------------------------------
 
-import threading
+import threading,re,math,time
 import roboconfig
 import SocketServer
 from math import log
@@ -20,6 +20,7 @@ from roboutils import *
 camera_distance = 0.0
 camera_x = 0
 camera_y = 0
+camera_time = time.time()
 
 #
 # Camera server - receives data from RoboRealm
@@ -28,10 +29,28 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
     
     # Handle incoming data
     def handle(self):
+        global camera_x, camera_y, camera_distance, camera_time
         data = self.request[0].strip()
-        socket = self.request[1]
-        socket.sendto(data.upper(), self.client_address)
-        log(data)
+#        socket = self.request[1]
+#        socket.sendto(data.upper(), self.client_address)
+        camera_regex = re.compile("(\d+);(\d+);(\d+);(\d+)")
+        match = camera_regex.search(data)
+        if not match:
+            log("Invalid camera data: %s" % data)
+            return
+
+        cogb = match.group(1)
+        dist = match.group(2)
+        xval = match.group(3)
+        yval = match.group(4)
+
+        # TODO - add value filtering here
+
+        camera_x = int(xval)
+        camera_y = int(yval)
+        camera_distance = (1/.746) * (math.log(float(cogb)/314.0))
+        camera_time = time.time()
+
  
 #
 # Thread to run the camera server
@@ -67,4 +86,7 @@ def initialize():
 #    X and Y are (integer) pixel offsets from the center of the frame.
 #    Distance is in meters.
 def get_data():
+    if (time.time() - camera_time) > roboconfig.camera_timeout:
+        log("WARNING: no camera data received for %d seconds" % \
+                (time.time()-camera_time))
     return (camera_x, camera_y, camera_distance)
