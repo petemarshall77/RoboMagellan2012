@@ -51,9 +51,9 @@ def mainloop(control_data):
             robopower.stop()
             return
         elif command['command'] == 'POWR':
-            robopower.set_power(command['power'])
+            robopower.power(command['power'])
         elif command['command'] == 'STER':
-            robopower.set_steering(command['steering'])
+            robopower.steer(command['steering'])
         elif command['command'] == 'WAIT':
             time.sleep(command['sleeptime'])
         else:
@@ -85,9 +85,16 @@ def navigate_to(latitude, longitude, mode='cone'):
         
         # Get camera, compass heading, and GPS data
         (camera_X, camera_Y, camera_distance) = robocamera.get_data()
+        log("Navigate to: camera_X = %03d, camera_Y = %03d, distance = %1.2f" \
+                % (camera_X, camera_Y, camera_distance))
+        
         current_heading = robosensors.get_compass()
+        log("Navigate to: current heading = %d" % current_heading)
+
         (gps_distance, heading_to_target) = \
                 robonavigation.vector_to_target(latitude, longitude)
+        log("Navigate to: target distance = %2.2f, vector = %d" % \
+                (gps_distance, heading_to_target))
         
         # Test to see if we are at the GPS waypoint (within the radius of
         # error). We we are and we're in goto mode, we're done. Otherwise
@@ -113,8 +120,11 @@ def navigate_to(latitude, longitude, mode='cone'):
         steer_angle = \
             robonavigation.get_steer_angle(current_heading, heading_to_target)
         log("Navigate to: steer_angle = " + str(steer_angle))
-        robopower.set_speed(5)
-        robopower.set_steering(steer_angle)
+        robopower.speed(5)
+        robopower.steer(steer_angle/180.0)
+
+        # Slow things down!
+        time.sleep(1)
 
 #------------------------------------------------------------------------
 # locate_cone()
