@@ -3,6 +3,7 @@
 # Main control program
 import sys,threading,traceback
 import robocamera,robosensors,robopower,robocontrol,robonavigation,roboconfig
+import robocomms
 from   roboutils import *
 
 #-------------------------------------------------------------------        
@@ -19,6 +20,7 @@ from   roboutils import *
 def initialize():
     try:
         control_data = robocontrol.process_control_file(sys.argv[1])
+        robocomms.initialize()
         robopower.initialize()
         robocamera.initialize()
         robosensors.initialize()

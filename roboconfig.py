@@ -19,3 +19,7 @@ re_sight_sleep_time = 0.5
 # Camera server network information
 camera_host = "localhost"
 camera_port = 4040
+
+# Comms server network information
+comms_host = "localhost"
+comms_port = 4041
