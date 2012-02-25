@@ -1,6 +1,7 @@
 # Control file processing for RoboMagellan2012
 
 import sys, re
+from robocomms import log
 from roboutils import *
 
 def process_goto_directive(line):

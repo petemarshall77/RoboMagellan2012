@@ -16,10 +16,14 @@ camera_timeout = 10
 re_sight_attempts = 10
 re_sight_sleep_time = 0.5
 
+# **** Network Configuration ****
+
 # Camera server network information
 camera_host = "localhost"
 camera_port = 4040
 
 # Comms server network information
-comms_host = "localhost"
 comms_port = 4041
+
+# Monitor server network information
+monitor_port = 4042

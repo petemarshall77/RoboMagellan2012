@@ -15,6 +15,7 @@ import threading,re,math,time
 import roboconfig
 import SocketServer
 from math import log
+from robocomms import log
 from roboutils import * 
 
 camera_distance = 0.0

@@ -1,5 +1,6 @@
 # Sensor processing for RoboMagellan2012
 
+from robocomms import log
 from roboutils import * 
 
 def initialize():

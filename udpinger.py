@@ -11,7 +11,7 @@ if len(sys.argv) < 3:
 hostname = sys.argv[1]
 port = int(sys.argv[2])
 
-host = socket.gethostbyname('127.0.0.1')
+host = socket.gethostbyname(hostname)
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 while True:

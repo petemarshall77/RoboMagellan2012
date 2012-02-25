@@ -3,6 +3,7 @@
 #    This module handles the power interfaces. As this is a quad steering
 #    robot, steering commands will also be handled here
 #
+from robocomms import log
 from roboutils import * 
 
 # Initialize power controls

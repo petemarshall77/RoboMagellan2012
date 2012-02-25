@@ -21,10 +21,11 @@
 # own UDP server to recieve the data.
 #-------------------------------------------------------------------------
 
-import threading, SocketServer, socket
+import threading, SocketServer, socket, time
 import roboconfig
 from roboutils import *
 
+start_time = time.time()
 transmit_list = []
 
 #
@@ -39,14 +40,12 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
         
         # Add to transmit list if identifier token is correct
         if data == "BaCoN":
-            host = socket.gethostbyname(self.client_address[0])
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            time.sleep(1)  # Allow time for callers server to start
-            log("Comms_server: added %s to transmit list" % self.client_address[0])
-            transmit_list.append((s, host))
-
-        print data
-
+            address = self.client_address
+            time.sleep(1)  # Allow time for caller's server to start
+            transmit_list.append(address)
+            log("Comms_server: added %s to transmit list" % address[0])
+        else:
+            log("Comms_server: invalid data %s" % data)
 
 #
 # Class to run the server thread
@@ -55,7 +54,7 @@ class CommsThread(threading.Thread):
 
     # Run - create and serve the comms server
     def run(self):
-        HOST = roboconfig.comms_host
+        HOST = get_local_ipv4_address()
         PORT = roboconfig.comms_port
         self.comms_server = SocketServer.UDPServer((HOST, PORT), MyUDPHandler)
         self.comms_server.serve_forever()
@@ -74,3 +73,23 @@ def initialize():
     comms_thread.start()
     log("Comms server initialization completed")
     return True
+
+#
+# Log messages
+#
+def log(message):
+    log_time = time.time() - start_time
+    for line in message.split('\n'):
+        output = "%08.3f %s" % (log_time, line)
+        print output
+        broadcast(output)
+
+#
+# Broadcast data to each socket in client list
+#
+def broadcast(data):
+
+    global transmit_list
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    for address in transmit_list:
+        sock.sendto(data, (address[0], roboconfig.monitor_port))

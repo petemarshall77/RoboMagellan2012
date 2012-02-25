@@ -1,9 +1,10 @@
 #!/usr/bin/python
 
 # Main control program
-import sys,threading,traceback
+import sys,threading,traceback,time
 import robocamera,robosensors,robopower,robocontrol,robonavigation,roboconfig
 import robocomms
+from   robocomms import log
 from   roboutils import *
 
 #-------------------------------------------------------------------        
@@ -126,7 +127,7 @@ def navigate_to(latitude, longitude, mode='cone'):
         robopower.steer(steer_angle/180.0)
 
         # Slow things down!
-        time.sleep(1)
+        time.sleep(3)
 
 #------------------------------------------------------------------------
 # locate_cone()

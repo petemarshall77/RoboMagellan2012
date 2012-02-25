@@ -1,5 +1,6 @@
 # Navigation processing for RoboMagellan2012
 
+from robocomms import *
 from roboutils import * 
 from math import sin, cos, atan2, radians, degrees, sqrt
 
