@@ -17,13 +17,8 @@ re_sight_attempts = 10
 re_sight_sleep_time = 0.5
 
 # **** Network Configuration ****
-
-# Camera server network information
-camera_host = "localhost"
-camera_port = 4040
-
-# Comms server network information
-comms_port = 4041
-
-# Monitor server network information
-monitor_port = 4042
+camera_host = "localhost"      # hostname of camera server (RoboRealm)
+camera_port = 4040             # port of camera server
+comms_port = 4041              # incoming communications requests
+monitor_port = 4042            # outgoing log messages
+command_port = 4043            # port for incoming command
