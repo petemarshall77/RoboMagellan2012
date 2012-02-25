@@ -32,6 +32,10 @@ def initialize():
 #-------------------------------------------------------------------------
 def process_command(command):
 
+    # Ignore blank lines
+    if command == "":
+        return
+
     # Speed command
     if command[0:5].lower() == 'speed':
         speed_re = re.compile('speed\s+([+|-]*)(\d+)')
@@ -46,9 +50,15 @@ def process_command(command):
         robopower.speed(speed)
         log("Speed set to %d" % speed)
         return
-
-    else:
-        log("Invalid command: %s" % command)
+    
+    # Stop command
+    if command[0:4].lower() == 'stop':
+        robopower.stop()
+        log("Robot stopped")
+        return
+    
+    # No match - must be an invalid command
+    log("Invalid command: %s" % command)
 
 #-------------------------------------------------------------------------
 # UDP Server
