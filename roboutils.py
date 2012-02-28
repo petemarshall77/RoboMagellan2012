@@ -12,7 +12,11 @@ def get_local_ipv4_address():
         output = commands.getoutput("/sbin/ifconfig | grep inet | grep -v inet6 | grep -v 127.0.0.1")
         ip_re = re.compile('inet addr:(\S+)')
         m = ip_re.search(output)
-        return m.group(1)
+        if m:
+            return m.group(1)
+        else:
+            return 'localhost'
+
     elif os.name == 'nt':
         return(socket.gethostbyname(socket.gethostname()))
 
