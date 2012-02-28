@@ -3,7 +3,7 @@
 #    This module handles the power interfaces. As this is a quad steering
 #    robot, steering commands will also be handled here
 #
-import time,threading
+import time,threading,serial
 import roboconfig
 from robocomms import log
 from roboutils import * 
@@ -37,12 +37,36 @@ current_speed = 0
 #
 class PowerThread(threading.Thread):
 
+    ser = serial.Serial(roboconfig.power_serial_port-1, \
+                            roboconfig.power_serial_baud)
     run_flag = True
 
+    # Set the motor speed by sending data to the Arduino
+    def set_speed(self, k):
+
+        k_val = 17 - abs(k)
+
+        if k < 0:
+            right_motor = "1,0,1,%s\n" % k_val 
+            left_motor =  "2,0,0,%s\n" % k_val
+        elif k == 0:
+            right_motor = "1,1,0,0\n"
+            left_motor  = "2,1,0,0\n"
+        else:
+            right_motor = "1,0,0,%s\n" % k_val
+            left_motor  = "2,0,1,%s\n" % k_val
+
+        log("Right: %s" % right_motor)
+        log("Left:  %s" % left_motor)
+
+        self.ser.write(right_motor)
+        self.ser.write(left_motor)
+
     def run(self):
-        while self.run_flag:
+        while True:
             global current_speed, target_speed
-            
+
+            # If necessary, bring current speed to target
             if current_speed != target_speed:
                 if current_speed < target_speed:
                     values = range(current_speed+1, target_speed+1)
@@ -50,9 +74,12 @@ class PowerThread(threading.Thread):
                     values = range(current_speed-1, target_speed-1, -1)
                 for k in values:
                     log("Setting speed to %d" % k)
-                    current_speed = target_speed
+                    self.set_speed(k)
+                    current_speed = k
                     time.sleep(roboconfig.power_delay)
 
+            if self.run_flag == False:
+                break
             time.sleep(roboconfig.power_delay)
 
         log("Power thread terminated")    

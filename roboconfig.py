@@ -18,6 +18,11 @@ re_sight_sleep_time = 0.5
 
 # Time between speed changes (for smooth acceleration)
 power_delay = 0.25
+
+# **** Serial connections ****
+power_serial_port = 6
+power_serial_baud = 9600
+
 # **** Network Configuration ****
 camera_host = "localhost"      # hostname of camera server (RoboRealm)
 camera_port = 4040             # port of camera server
