@@ -127,3 +127,8 @@ def halt():
 def stop():
     """ Stop the robot """
     halt()
+
+# Get the robot speed
+def get_power():
+    global target_speed
+    return target_speed

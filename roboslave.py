@@ -7,6 +7,13 @@ import robocomms
 from   robocomms import log
 from   roboutils import *
 
+#-------------------------------------------------------------------
+# Log the robot status
+#-------------------------------------------------------------------
+def log_robot_status():
+    log(">> Speed=%d" % robopower.get_power())
+    log(">> Compass=%3.2f" % robosensors.get_compass())
+
 #-------------------------------------------------------------------        
 # Robot initialization
 #
@@ -69,6 +76,7 @@ class MyUDPHandler(SocketServer.BaseRequestHandler):
     def handle(self):
         data = self.request[0].strip()
         process_command(data)
+        log_robot_status()
 
 #-------------------------------------------------------------------------
 # Main processing loop

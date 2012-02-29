@@ -46,7 +46,8 @@ def initialize():
 #    as an integer between 0 and 359, where 0 is north, 90 is east, 180
 #    is south, and 270 is west
 def get_compass():
-    return 90
+    global compass_data
+    return compass_data
 
 # touch_down() - return True if the touch sensor is activated
 def touch_down():
