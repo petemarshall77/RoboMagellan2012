@@ -11,8 +11,12 @@ from   roboutils import *
 # Log the robot status
 #-------------------------------------------------------------------
 def log_robot_status():
+    ping = robosensors.get_sensors()
+    touch_sensor = robosensors.get_bumper()
     log(">> Speed=%d" % robopower.get_power())
     log(">> Compass=%3.2f" % robosensors.get_compass())
+    log(">> Touch=%s, Ping1=%d, Ping2=%d, Ping3=%d" % \
+            (touch_sensor, ping[0], ping[1], ping[2]))
 
 #-------------------------------------------------------------------        
 # Robot initialization
