@@ -25,9 +25,6 @@ power_serial_baud = 9600
 compass_serial_port = 2
 compass_serial_baud = 19200
 compass_read_delay = 0.25     # read compass every n.n seconds
-sensor_serial_port = 5
-sensor_serial_baud = 9600
-sensor_read_delay = 0.1     # read sensor data every n.n seconds
 
 # **** Network Configuration ****
 camera_host = "localhost"      # hostname of camera server (RoboRealm)
