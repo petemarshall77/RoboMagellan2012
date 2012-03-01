@@ -1,5 +1,6 @@
 # Navigation processing for RoboMagellan2012
 
+import threading,serial
 from robocomms import *
 from roboutils import * 
 from math import sin, cos, atan2, radians, degrees, sqrt
@@ -7,8 +8,34 @@ from math import sin, cos, atan2, radians, degrees, sqrt
 earth_radius = 6371000.0    # meters
 global gps_latitude, gps_longitude
 
+#----------------------------------------------------------------------------
+# GPS Processing Thread
+#----------------------------------------------------------------------------
+class GpsThread(threading.Thread):
+    
+    ser = serial.Serial(roboconfig.gps_serial_port-1, \
+                            roboconfig.gps_serial_baud)
+    run_flag = True
+
+    # Get the GPS data
+    def run(self):
+        while self.run_flag == True:
+            self.ser.flushInput() # Discard any buffered readings
+            self.ser.readline()   # Force the next read to be a full line
+            data = self.ser.readline()
+            log(data)
+        log("GPS thread terminated")
+
+    # Stop the thread
+    def stop(self):
+        log("Terminating GPS Thread")
+        self.run_flag = False
+
+
 def initialize():
     log("Navigation initialization started")
+    gps_thread = GpsThread()
+    gps_thread.start()
     log("Navigation initialization completed")
     return True
 

@@ -213,9 +213,10 @@ def main():
     robopower.halt()
     
     # Terminate running threads
-    for thread in threading.enumerate()[1:]:
-        log("Terminating thread: " + str(thread))
-        thread.stop()
+    for thread in threading.enumerate():
+        if thread.name != 'MainThread':
+            log("Terminating thread: " + str(thread))
+            thread.stop()
 
 if __name__ == '__main__':
     main()

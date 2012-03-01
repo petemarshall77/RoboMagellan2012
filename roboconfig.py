@@ -28,6 +28,8 @@ compass_read_delay = 0.25     # read compass every n.n seconds
 sensor_serial_port = 5
 sensor_serial_baud = 9600
 sensor_read_delay = 0.1     # read sensor data every n.n seconds
+gps_serial_port = 1
+gps_serial_baud = 4800
 
 # **** Network Configuration ****
 camera_host = "localhost"      # hostname of camera server (RoboRealm)

@@ -63,7 +63,7 @@ class CommsThread(threading.Thread):
     def stop(self):
         log("Terminating comms server")
         self.comms_server.shutdown()
-
+        log("Comms server terminated")
 #
 # Communications initialization
 #

@@ -32,9 +32,11 @@ class CompassThread(threading.Thread):
             else:
                 log("robosensors - recieved invalid compass data: %s" % data)
             time.sleep(roboconfig.compass_read_delay)
+        log("Compass thread terminated")
     
     # Stop the thread
     def stop(self):
+        log("Terminating compass thread")
         self.run_flag = False
 
 
@@ -76,10 +78,11 @@ class SensorThread(threading.Thread):
                     log("robosensor - received invalid data %s" % data)
 
             time.sleep(roboconfig.sensor_read_delay)
-
+        log("Sensor thread terminated")
     
     # Stop the thread
     def stop(self):
+        log("Terminating sensor thread")
         self.run_flag = False
 
 

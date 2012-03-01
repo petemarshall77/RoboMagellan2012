@@ -70,6 +70,7 @@ class CameraThread(threading.Thread):
     def stop(self):
         log("Terminating camera server")
         self.camera_server.shutdown()
+        log("Camera server terminated")
         
 #
 # Camera initialization
