@@ -14,7 +14,8 @@ global gps_latitude, gps_longitude
 class GpsThread(threading.Thread):
     
     ser = serial.Serial(roboconfig.gps_serial_port-1, \
-                            roboconfig.gps_serial_baud)
+                            roboconfig.gps_serial_baud, \
+                            timeout = roboconfig.gps_serial_timeout)
     run_flag = True
 
     # Get the GPS data
@@ -23,7 +24,10 @@ class GpsThread(threading.Thread):
             self.ser.flushInput() # Discard any buffered readings
             self.ser.readline()   # Force the next read to be a full line
             data = self.ser.readline()
-            log(data)
+            if data == "":
+                log("Warning: no GPS data recived")
+            else:
+                log("GPS data: %s" % data)
         log("GPS thread terminated")
 
     # Stop the thread

@@ -30,6 +30,7 @@ sensor_serial_baud = 9600
 sensor_read_delay = 0.1     # read sensor data every n.n seconds
 gps_serial_port = 1
 gps_serial_baud = 4800
+gps_serial_timeout = 5
 
 # **** Network Configuration ****
 camera_host = "localhost"      # hostname of camera server (RoboRealm)
