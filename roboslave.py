@@ -17,6 +17,8 @@ def log_robot_status():
     log(">> Compass=%3.2f" % robosensors.get_compass())
     log(">> Touch=%s, Ping1=%d, Ping2=%d, Ping3=%d" % \
             (touch_sensor, ping[0], ping[1], ping[2]))
+    log(">> CameraX=%d, CameraY=%d, Camera Distance = %d" % \
+            robocamera.get_data())
 
 #-------------------------------------------------------------------        
 # Robot initialization
