@@ -47,14 +47,14 @@ class PowerThread(threading.Thread):
         k_val = 17 - abs(k)
 
         if k < 0:
-            right_motor = "1,0,1,%s\n" % k_val 
-            left_motor =  "2,0,0,%s\n" % k_val
+            right_motor = "1,0,0,%s\n" % k_val 
+            left_motor =  "2,0,1,%s\n" % k_val
         elif k == 0:
             right_motor = "1,1,0,0\n"
             left_motor  = "2,1,0,0\n"
         else:
-            right_motor = "1,0,0,%s\n" % k_val
-            left_motor  = "2,0,1,%s\n" % k_val
+            right_motor = "1,0,1,%s\n" % k_val
+            left_motor  = "2,0,0,%s\n" % k_val
 
         log("Right: %s" % right_motor)
         log("Left:  %s" % left_motor)
